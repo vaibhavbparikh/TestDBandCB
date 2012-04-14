@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-type" name="viewport"
+	content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+<title></title>
+
+<link rel="stylesheet" href="index.css" />
+<script type="text/javascript" charset="utf-8" src="phonegap-1.4.1.js"></script>
+<script type="text/javascript" src="js/childbrowser.js"></script>
+<script type="text/javascript">
+
+	var DBObject ;
+	function CB() {
+		
+		/*
+		 *To open Childbrowser window in application
+		 */
+		
+		var url = "http://www.google.com";
+		window.plugins.childBrowser.showWebPage(url, {showLocationBar : false});
+		window.plugins.childBrowser.onClose = closed;
+	}
+
+	 function closed() {
+			 location.reload();
+		}
+	
+	
+	function DoDBFunctionality() {
+		
+		/*
+		 *If you will comment out following two lines u will experience Security Experience
+		 */
+		
+		
+		try {
+			DBObject = window.openDatabase("TestDB", "1.0", "TestDataBase",1024 * 1024 * 2);
+		} catch (ex) {
+			alert("in catch" + ex.message);
+		}
+		
+		DBObject.transaction(insertIntoDB,onError,onSuccess);
+		
+		function insertIntoDB(tx) {
+			var name = "Vaibhav";
+			tx.executeSql('DROP TABLE IF EXISTS TestTable');
+			tx.executeSql('CREATE TABLE IF NOT EXISTS TestTable (Name)');
+			tx.executeSql("INSERT INTO TestTable(Name) VALUES ('"+name+"')");
+			//alert("In Insert Function");
+		}
+		
+		function onSuccess() {
+			//alert("on success");
+		}
+		
+		/*
+		 * If DB throws an Error
+		 */
+		
+		function onError(err) {
+			alert("Error is : " +err.message);
+		}
+	}
+</script>
+</head>
+
+<body onload="DoDBFunctionality()">
+	<h1>Hello CB</h1>
+	<input type="submit" name="DB" value="DB" onclick="DoDBFunctionality()" />
+	<input type="submit" name="CB" value="CB" onclick="CB()" />
+</body>
+</html>
