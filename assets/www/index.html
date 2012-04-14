@@ -32,8 +32,10 @@
 		/*
 		 *If you will comment out following two lines u will experience Security Experience
 		 */
-		
-		
+
+			navigator.openDatabase = window.openDatabase = DroidDB_openDatabase;
+			window.droiddb = new DroidDB();
+		 
 		try {
 			DBObject = window.openDatabase("TestDB", "1.0", "TestDataBase",1024 * 1024 * 2);
 		} catch (ex) {
@@ -51,7 +53,7 @@
 		}
 		
 		function onSuccess() {
-			//alert("on success");
+			alert("Insertion in DB is successfull");
 		}
 		
 		/*
